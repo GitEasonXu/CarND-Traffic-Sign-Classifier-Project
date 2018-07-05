@@ -98,6 +98,7 @@ plt.show()
 <td><img src="./image/Valid.png"  border=0></td>
 <td><img src="./image/Test.png"  border=0></td>
 </tr></table>
+
 ---
 
 ### Design and Test a Model Architecture
@@ -144,23 +145,96 @@ X_test_normalized = (X_test_gry - 128)/128
 
 <img src="./image/Compare_Image.png"  align="middle" border=0></td>
 
-#### 2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
+* #### **Step 2: Design a Model Architecture**
 
-My final model consisted of the following layers:
+&nbsp;&nbsp;&nbsp;My final model consisted of the following layers:
 
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| Input         		| 32x32x3 RGB image   							| 
-| Convolution 3x3     	| 1x1 stride, same padding, outputs 32x32x64 	|
+| Input         		| 32x32x1 Gray image   							| 
+| Convolution 5x5     	| 1x1 stride, valid padding, outputs 28x28x6 	|
 | RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 16x16x64 				|
-| Convolution 3x3	    | etc.      									|
+| Max pooling	      	| 2x2 stride, valid padding, outputs 14x14x6 	|
+| Convolution 5x5	    | 1x1 stride, valid padding, outputs 10x10x16   |  
+| RELU                  |  
+| Max pooling	      	| 2x2 stride, valid padding, outputs 5x5x16 	|
+| Convolution 5x5     	| 1x1 stride, valid padding, outputs 1x1x400 	|
+| RELU					|												|
+|Flatten layers         | (1x1x400 -> 400)add(5x5x16 -> 400) outputs 800|
+| Dropout               |             0.5                               |
 | Fully connected		| etc.        									|
 | Softmax				| etc.        									|
-|						|												|
-|						|												|
- 
+| Dropout               |             0.5                               |
+| Fully connected		|           									|
+| Softmax				| etc.        									|
+| Dropout				|		      0.5							    |
 
+
+* #### **Step 3: Train the Model**
+
+```
+import tensorflow as tf
+from tensorflow.contrib.layers import flatten
+from sklearn.utils import shuffle
+
+EPOCH = 20
+BATCH_SIZE = 128
+LEARNING_RAT = 0.002
+KEEP_PROB = 0.5
+
+tf.reset_default_graph() 
+
+x = tf.placeholder(tf.float32, (None, 32, 32, 1))
+y = tf.placeholder(tf.int32, (None))
+keep_prob = tf.placeholder(tf.float32) 
+one_hot_y = tf.one_hot(y, 43)
+
+logits = LeNet2(x)
+cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=one_hot_y, logits=logits)
+loss_operation = tf.reduce_mean(cross_entropy)
+optimizer = tf.train.AdamOptimizer(LEARNING_RAT).minimize(loss_operation)
+
+
+#Accuracy
+correct_prediction = tf.equal(tf.argmax(logits, 1), tf.argmax(one_hot_y, 1))
+accuracy_operation = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+saver = tf.train.Saver()
+
+def evaluate(X_data, y_data):
+    num_examples = len(X_data)
+    total_accuracy = 0
+    sess = tf.get_default_session()
+    for offset in range(0, num_examples, BATCH_SIZE):
+        batch_x, batch_y = X_data[offset:offset+BATCH_SIZE], y_data[offset:offset+BATCH_SIZE]
+        accuracy = sess.run(accuracy_operation, feed_dict={x: batch_x, y: batch_y,keep_prob:1.0})
+        total_accuracy += (accuracy * len(batch_x))
+    return total_accuracy / num_examples
+    
+
+with tf.Session() as sess:
+    sess.run(tf.global_variables_initializer())
+    num_examples = len(X_train)
+    
+    print("Training...")
+    print()
+    for i in range(EPOCH):
+        X_train, y_train = shuffle(X_train, y_train)
+        for offset in range(0, num_examples, BATCH_SIZE):
+            end = offset + BATCH_SIZE
+            batch_x, batch_y = X_train[offset:end], y_train[offset:end]
+            sess.run(optimizer, feed_dict={x: batch_x, y: batch_y,keep_prob:0.5})
+        
+        train_accuracy = evaluate(X_train, y_train)
+        validation_accuracy = evaluate(X_valid, y_valid)
+        print("EPOCH {} ...".format(i+1))
+        print("Train Accuracy = {:.3f}     Validation Accuracy = {:.3f}".format(train_accuracy,validation_accuracy))
+        print()
+    test_accuracy = evaluate(X_test, y_test)
+    print("Test Accuracy = {:.3f}".format(test_accuracy))
+    saver.save(sess, './lenet')
+
+    print("Model saved")
+```
 
 #### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 

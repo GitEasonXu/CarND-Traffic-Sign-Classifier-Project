@@ -99,8 +99,11 @@ plt.show()
 <td><img src="./image/Test.png"  border=0></td>
 </tr></table>
 ---
+
 ### Design and Test a Model Architecture
-* #### **Step 1: Pre-processing Data**  
+
+* #### **Step 1: Pre-processing Data**
+
 &nbsp;&nbsp;&nbsp;**1. Convert RGB image to Gray image**
 ```  
 def rgb2gray(rgb):
@@ -117,9 +120,9 @@ X_valid_gry = rgb2gray_mean(X_valid_rgb)
 X_test_rgb = X_test
 X_test_gry = rgb2gray_mean(X_test_rgb)  
 ```
-There are two methods you can use.  
-`rgb2gray(rgb)`: Gray=R\*0.299+G\*0.587+B\*0.114      
-`rgb2gray_mean(rgb)`: Gray=（R+G+B）/3;   
+There are two methods you can use.
+`rgb2gray(rgb)`: Gray=R\*0.299+G\*0.587+B\*0.114
+`rgb2gray_mean(rgb)`: Gray=（R+G+B）/3; 
 
 &nbsp;&nbsp;&nbsp;**2. Normalized processing**
 ```  
@@ -127,14 +130,17 @@ X_train_normalized = (X_train_gry - 128)/128
 X_valid_normalized = (X_valid_gry - 128)/128 
 X_test_normalized = (X_test_gry - 128)/128
 ```
-* ### Question 
+
+* ### Question
+
 &nbsp;&nbsp;&nbsp;**What techniques were chosen and why did you choose these techniques?**
   
 &nbsp;&nbsp;&nbsp;**Answer:**  
 &nbsp;&nbsp;&nbsp;My dataset preprocessing consisted of:
-  
+
 * 1.**Converting to grayscale** : This worked well for Sermanet and LeCun as described in their traffic sign classification article. It also helps to reduce training time, since Gray image has only one channel compared to Rgb image.
-* 2.**Normalizing the data to the range (-1,1)** : Normalization is a technique for deep learning. It can make the cost function more symmetrical, which can speed up the training process.  
+
+* 2.**Normalizing the data to the range (-1,1)** : Normalization is a technique for deep learning. It can make the cost function more symmetrical, which can speed up the training process.
 
 <img src="./image/Compare_Image.png"  align="middle" border=0></td>
 

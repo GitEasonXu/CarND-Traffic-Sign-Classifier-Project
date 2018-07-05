@@ -93,11 +93,11 @@ plt.title("Valid Dataset Sign Counts")
 plt.savefig('./Valid.png')
 plt.show()  
 ```
-<center>
+
 <img src="./image/Train.png" width="50%" height="50%" ALIGN=right>
-<img src="./image/Vail.png" width="50%" height="50%" ALIGN=right>
+<img src="./image/Vaild.png" width="50%" height="50%" ALIGN=right>
 <img src="./image/Test.png" width="50%" height="50%" ALIGN=right>
-</center>
+
 #### 2. Include an exploratory visualization of the dataset.
 
 Here is an exploratory visualization of the data set. It is a bar chart showing how the data ...

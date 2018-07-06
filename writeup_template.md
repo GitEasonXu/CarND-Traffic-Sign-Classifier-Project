@@ -174,6 +174,7 @@ X_test_normalized = (X_test_gry - 128)/128
 #### **Modified LeNet Model Architecture**
 adapted from Sermanet/LeCunn traffic sign classification journal article, but in order to learn more feature, I add two full-connect layer in the last layer.
 
+
 <img src="./image/modifiedLeNet.jpeg"  align="middle" border=0>
 
 ```
@@ -345,7 +346,9 @@ with tf.Session() as sess:
 
 Here are eight German traffic signs that I found on the web:
 
-<img src="./image/my_picture.png"  align="left" border=0>    
+<div align="left">
+<img src="./image/my_picture.png"> 
+</div>
 
 #### 2. Discuss the model's predictions on these new traffic signs.
 

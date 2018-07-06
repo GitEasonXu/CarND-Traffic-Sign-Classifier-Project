@@ -345,9 +345,7 @@ with tf.Session() as sess:
 
 Here are eight German traffic signs that I found on the web:
 
-<img src="./image/my_picture.png"  align="left" border=0>
-
-
+<img src="./image/my_picture.png"  align="left" border=0>    
 
 #### 2. Discuss the model's predictions on these new traffic signs.
 

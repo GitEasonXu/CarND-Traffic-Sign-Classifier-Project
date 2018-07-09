@@ -368,6 +368,11 @@ with tf.Session() as sess:
 ```
 Test Set Accuracy = 1.000
 ```
+#### &nbsp;&nbsp;&nbsp;Hint:
+
+* The label of selected image should be incluted in `signnames.csv` 
+* There is no special requirement for image quality, but I think the higher the quality, the better the result.
+* Traffic signs in the images that are of interest  should try to occupy a larger area.
 
 Here are the results of the prediction:
 

@@ -390,14 +390,15 @@ my_labels_tensor = [3, 11, 1, 12, 38, 34, 18, 25]
 #my_labels_onehot = tf.one_hot(my_labels, 43)
 #logits = LeNet2(x)
 
-top5_prediction = tf.nn.in_top_k(logits, my_labels_tensor, k=5)
+logit_softmax = tf.nn.softmax(logits)
+top5_prediction = tf.nn.in_top_k(logit_softmax, my_labels_tensor, k=5)
 top5_accuracy = tf.reduce_mean(tf.cast(top5_prediction, tf.float32))
 
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     saver4 = tf.train.import_meta_graph('./lenet.meta')
     saver4.restore(sess, "./lenet")
-    result = sess.run(logits, feed_dict={x:my_images_normalized,keep_prob:1.})
+    result = sess.run(logit_softmax, feed_dict={x:my_images_normalized,keep_prob:1.})
     values,indices = sess.run(tf.nn.top_k(result,k=5))
     print('='*40)
     print("TOP-5 result: {}".format(values))
@@ -417,84 +418,84 @@ for i, my_label in enumerate(my_labels_tensor):
 ```
 
 ```
-========================================
+================================================================================
 1 picture real label is:Speed limit (60km/h)
 ********************
 Prediction result:
-Speed limit (60km/h)                               probability is 23.09
-Speed limit (80km/h)                               probability is  4.59
-Slippery road                                      probability is  4.41
-Speed limit (50km/h)                               probability is -2.35
-No passing for vehicles over 3.5 metric tons       probability is -6.60
+Speed limit (60km/h)                               probability is 1.0
+Speed limit (80km/h)                               probability is 9.240709530899949e-09
+Slippery road                                      probability is 7.775419419431273e-09
+Speed limit (50km/h)                               probability is 8.96156673174664e-12
+No passing for vehicles over 3.5 metric tons       probability is 1.2820640545290612e-13
 
-========================================
+================================================================================
 2 picture real label is:Right-of-way at the next intersection
 ********************
 Prediction result:
-Right-of-way at the next intersection              probability is 82.73
-Beware of ice/snow                                 probability is 27.87
-Pedestrians                                        probability is  4.07
-Double curve                                       probability is  0.85
-End of no passing by vehicles over 3.5 metric tons probability is -6.73
+Right-of-way at the next intersection              probability is 1.0
+Beware of ice/snow                                 probability is 1.4901138765365726e-24
+Pedestrians                                        probability is 6.901779049524377e-35
+Double curve                                       probability is 2.7437558456132493e-36
+Speed limit (20km/h)                               probability is 0.0
 
-========================================
+================================================================================
 3 picture real label is:Speed limit (30km/h)
 ********************
 Prediction result:
-Speed limit (30km/h)                               probability is 19.23
-Speed limit (70km/h)                               probability is  9.30
-Speed limit (20km/h)                               probability is  9.12
-Roundabout mandatory                               probability is  1.02
-Speed limit (50km/h)                               probability is  0.85
+Speed limit (30km/h)                               probability is 0.9999105930328369
+Speed limit (70km/h)                               probability is 4.8679212341085076e-05
+Speed limit (20km/h)                               probability is 4.079785867361352e-05
+Roundabout mandatory                               probability is 1.2312579400486356e-08
+Speed limit (50km/h)                               probability is 1.047567277367989e-08
 
-========================================
+================================================================================
 4 picture real label is:Priority road
 ********************
 Prediction result:
-Priority road                                      probability is 93.20
-Roundabout mandatory                               probability is 31.26
-End of no passing                                  probability is -8.36
-No passing                                         probability is -10.91
-No passing for vehicles over 3.5 metric tons       probability is -11.68
+Priority road                                      probability is 1.0
+Roundabout mandatory                               probability is 1.2601675478636564e-27
+Speed limit (20km/h)                               probability is 0.0
+Speed limit (30km/h)                               probability is 0.0
+Speed limit (50km/h)                               probability is 0.0
 
-========================================
+================================================================================
 5 picture real label is:Keep right
 ********************
 Prediction result:
-Keep right                                         probability is 251.72
-Turn left ahead                                    probability is 26.17
-Speed limit (60km/h)                               probability is -11.36
-Priority road                                      probability is -24.34
-Dangerous curve to the right                       probability is -31.26
+Keep right                                         probability is 1.0
+Speed limit (20km/h)                               probability is 0.0
+Speed limit (30km/h)                               probability is 0.0
+Speed limit (50km/h)                               probability is 0.0
+Speed limit (60km/h)                               probability is 0.0
 
-========================================
+================================================================================
 6 picture real label is:Turn left ahead
 ********************
 Prediction result:
-Turn left ahead                                    probability is 51.85
-Speed limit (60km/h)                               probability is  5.72
-End of all speed and passing limits                probability is  4.85
-Stop                                               probability is -1.91
-Ahead only                                         probability is -2.60
+Turn left ahead                                    probability is 1.0
+Speed limit (60km/h)                               probability is 9.261421099699137e-21
+End of all speed and passing limits                probability is 3.878093322493521e-21
+Stop                                               probability is 4.4963438655523865e-24
+Ahead only                                         probability is 2.2507666935086915e-24
 
-========================================
+================================================================================
 7 picture real label is:General caution
 ********************
 Prediction result:
-General caution                                    probability is 83.48
-Traffic signals                                    probability is 26.67
-Pedestrians                                        probability is 25.89
-Right-of-way at the next intersection              probability is  1.75
-Turn right ahead                                   probability is -7.38
+General caution                                    probability is 1.0
+Traffic signals                                    probability is 2.131242088327484e-25
+Pedestrians                                        probability is 9.750765139088475e-26
+Right-of-way at the next intersection              probability is 3.18480406675736e-36
+Speed limit (20km/h)                               probability is 0.0
 
-========================================
+================================================================================
 8 picture real label is:Road work
 ********************
 Prediction result:
-Road work                                          probability is 15.41
-Traffic signals                                    probability is  5.83
-Wild animals crossing                              probability is  2.67
-Road narrows on the right                          probability is  2.53
-Bicycles crossing                                  probability is  1.28
+Road work                                          probability is 0.9999239444732666
+Traffic signals                                    probability is 6.903544999659061e-05
+Wild animals crossing                              probability is 2.9567290766863152e-06
+Road narrows on the right                          probability is 2.5702620405354537e-06
+Bicycles crossing                                  probability is 7.313303171940788e-07
 ```
 

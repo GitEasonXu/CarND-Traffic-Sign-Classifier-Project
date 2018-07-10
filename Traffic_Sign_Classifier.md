@@ -368,11 +368,12 @@ with tf.Session() as sess:
 ```
 Test Set Accuracy = 1.000
 ```
-#### &nbsp;&nbsp;&nbsp;Hint:
+#### &nbsp;&nbsp;&nbsp;Hint: _Discuss new traffic signs_
 
 * The label of selected image should be incluted in `signnames.csv` 
-* There is no special requirement for image quality, but I think the higher the quality, the better the result.
-* Traffic signs in the images that are of interest  should try to occupy a larger area.
+* In order to get good results, the brightness and contrast of the test image you picked should be as similar as possible to the training set image.
+* Background is not very important for new images, but it should be remembered that a picture with a signal.
+* The traffic signs in the picture is as large as possible.
 
 Here are the results of the prediction:
 
